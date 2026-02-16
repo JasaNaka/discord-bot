@@ -1,0 +1,102 @@
+{
+  "quests": [
+    {
+      "id": "common_01",
+      "rarity": "common",
+      "min_gold": 50,
+      "max_gold": 120,
+      "message": "You deliver Extra Ketchup to sans., he gives you {amount} Gold!"
+    },
+    {
+      "id": "common_02",
+      "rarity": "common",
+      "min_gold": 60,
+      "max_gold": 130,
+      "message": "You bring Fresh Spaghetti to Papyrus, he gives you {amount} Gold!"
+    },
+    {
+      "id": "common_03",
+      "rarity": "common",
+      "min_gold": 50,
+      "max_gold": 110,
+      "message": "You buy Mustard for Fell!Sans, he gives you {amount} Gold!"
+    },
+    {
+      "id": "common_04",
+      "rarity": "common",
+      "min_gold": 70,
+      "max_gold": 140,
+      "message": "You bring Art Supplies to Ink!Sans, he gives you {amount} Gold!"
+    },
+    {
+      "id": "rare_01",
+      "rarity": "rare",
+      "min_gold": 150,
+      "max_gold": 300,
+      "message": "You solve Papyrus' Ultimate Puzzle, he gives you {amount} Gold!"
+    },
+    {
+      "id": "rare_02",
+      "rarity": "rare",
+      "min_gold": 180,
+      "max_gold": 320,
+      "message": "You help Gaster debug a Broken Code, he gives you {amount} Gold!"
+    },
+    {
+      "id": "rare_03",
+      "rarity": "rare",
+      "min_gold": 160,
+      "max_gold": 310,
+      "message": "You defeat a Glitch Beast, you earn {amount} Gold!"
+    },
+    {
+      "id": "epic_01",
+      "rarity": "epic",
+      "min_gold": 400,
+      "max_gold": 700,
+      "message": "You close a Corrupted Portal leaking monsters, you earn {amount} Gold!"
+    },
+    {
+      "id": "epic_02",
+      "rarity": "epic",
+      "min_gold": 450,
+      "max_gold": 750,
+      "message": "You survive a Nightmare Wave, you earn {amount} Gold!"
+    },
+    {
+      "id": "epic_03",
+      "rarity": "epic",
+      "min_gold": 500,
+      "max_gold": 800,
+      "message": "You repair a Broken Timeline Fragment, you gain {amount} Gold!"
+    },
+    {
+      "id": "legendary_01",
+      "rarity": "legendary",
+      "min_gold": 1000,
+      "max_gold": 1500,
+      "message": "You restore a Destroyed Timeline, you earn {amount} Gold!"
+    },
+    {
+      "id": "legendary_02",
+      "rarity": "legendary",
+      "min_gold": 1200,
+      "max_gold": 1700,
+      "message": "You defeat the Multiverse Overlord, you earn {amount} Gold!"
+    },
+    {
+      "id": "legendary_03",
+      "rarity": "legendary",
+      "min_gold": 1100,
+      "max_gold": 1600,
+      "message": "You fix the Core of Reality, you earn {amount} Gold!"
+    }
+  ],
+
+  "rarity_rates": {
+    "common": 60,
+    "rare": 25,
+    "epic": 10,
+    "legendary": 5
+  }
+}
