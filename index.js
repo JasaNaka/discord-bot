@@ -1,40 +1,101 @@
-const { Client, GatewayIntentBits, SlashCommandBuilder, REST, Routes } = require('discord.js');
+const { Client, GatewayIntentBits, REST, Routes, SlashCommandBuilder } = require('discord.js');
 const fs = require('fs');
 
-const token = process.env.TOKEN;
-const clientId = process.env.CLIENT_ID;
-
 const client = new Client({
-  intents: [GatewayIntentBits.Guilds]
+    intents: [GatewayIntentBits.Guilds]
 });
 
-// Load player data
-let data = fs.existsSync('./data.json')
-  ? JSON.parse(fs.readFileSync('./data.json'))
-  : {};
+const TOKEN = process.env.TOKEN;
+const CLIENT_ID = process.env.CLIENT_ID;
 
-// Load quest data
-const questsData = JSON.parse(fs.readFileSync('./quests.json'));
+const DATA_FILE = './data.json';
 
-function saveData() {
-  fs.writeFileSync('./data.json', JSON.stringify(data, null, 2));
+// Tạo file JSON nếu chưa có
+if (!fs.existsSync(DATA_FILE)) {
+    fs.writeFileSync(DATA_FILE, JSON.stringify({}));
 }
 
-function getRandomQuest() {
-  const rates = questsData.rarity_rates;
-  const total = Object.values(rates).reduce((a, b) => a + b, 0);
-  let rand = Math.random() * total;
+function loadData() {
+    return JSON.parse(fs.readFileSync(DATA_FILE));
+}
 
-  let selectedRarity;
-  for (const rarity in rates) {
-    if (rand < rates[rarity]) {
-      selectedRarity = rarity;
-      break;
+function saveData(data) {
+    fs.writeFileSync(DATA_FILE, JSON.stringify(data, null, 2));
+}
+
+// Slash commands
+const commands = [
+    new SlashCommandBuilder()
+        .setName('balance')
+        .setDescription('Check your money'),
+    new SlashCommandBuilder()
+        .setName('daily')
+        .setDescription('Claim daily reward'),
+    new SlashCommandBuilder()
+        .setName('quest')
+        .setDescription('Complete a quest')
+].map(cmd => cmd.toJSON());
+
+const rest = new REST({ version: '10' }).setToken(TOKEN);
+
+(async () => {
+    try {
+        await rest.put(
+            Routes.applicationCommands(CLIENT_ID),
+            { body: commands }
+        );
+        console.log('Slash commands registered.');
+    } catch (error) {
+        console.error(error);
     }
-    rand -= rates[rarity];
-  }
+})();
 
-  const filtered = questsData.quests.filter(q => q.rarity === selectedRarity);
+client.on('ready', () => {
+    console.log(`Bot online as ${client.user.tag}`);
+});
+
+client.on('interactionCreate', async interaction => {
+    if (!interaction.isChatInputCommand()) return;
+
+    const data = loadData();
+    const userId = interaction.user.id;
+
+    if (!data[userId]) {
+        data[userId] = {
+            money: 0,
+            lastDaily: 0
+        };
+    }
+
+    if (interaction.commandName === 'balance') {
+        await interaction.reply(`💰 You have ${data[userId].money} coins.`);
+    }
+
+    if (interaction.commandName === 'daily') {
+        const now = Date.now();
+        const cooldown = 24 * 60 * 60 * 1000;
+
+        if (now - data[userId].lastDaily < cooldown) {
+            return interaction.reply("⏳ You already claimed daily reward.");
+        }
+
+        data[userId].money += 100;
+        data[userId].lastDaily = now;
+        saveData(data);
+
+        await interaction.reply("🎁 You received 100 coins!");
+    }
+
+    if (interaction.commandName === 'quest') {
+        const reward = Math.floor(Math.random() * 200) + 50;
+        data[userId].money += reward;
+        saveData(data);
+
+        await interaction.reply(`⚔️ Quest completed! You earned ${reward} coins.`);
+    }
+});
+
+client.login(TOKEN);  const filtered = questsData.quests.filter(q => q.rarity === selectedRarity);
   return filtered[Math.floor(Math.random() * filtered.length)];
 }
 
